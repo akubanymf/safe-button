@@ -122,51 +122,57 @@ class _MyHomePageState extends State<MyHomePage> {
                 ],
               ),
               SizedBox(height: 90),
-              Stack(
-                alignment: Alignment.center,
-                children: [
-                  Positioned(
-                      child: Align(
-                        child: SvgPicture.asset(
+              GestureDetector(
+                onTap: (){
+                  sendSms();
+                },
+                child: Stack(
+                  alignment: Alignment.center,
+                  children: [
+                    Positioned(
+                        child: Align(
+                          child: SvgPicture.asset(
                             "assets/images/circle1.svg",
-                          height: 297,
-                          width: 297,
-                          fit: BoxFit.scaleDown,
-                        ),
-                    )
-                  ),
-                  Positioned(
-                      child: Align(
-                        // alignment: Alignment.center,
-                        child: SvgPicture.asset(
+                            height: 297,
+                            width: 297,
+                            fit: BoxFit.scaleDown,
+                          ),
+                        )
+                    ),
+                    Positioned(
+                        child: Align(
+                          // alignment: Alignment.center,
+                          child: SvgPicture.asset(
                             "assets/images/circle2.svg",
-                          height: 270,
-                          width: 270,
-                          fit: BoxFit.scaleDown,
-                        ),
-                      )
-                  ),
-                  Positioned(
-                    top: 35,
-                      child: Align(
-                        // alignment: Alignment.center,
-                        child: Image.asset(
-                          "assets/images/circle3.png",
-                          width: 235,
-                          height: 235,
-                        ),
-                      )
+                            height: 270,
+                            width: 270,
+                            fit: BoxFit.scaleDown,
+                          ),
+                        )
+                    ),
+                    Positioned(
+                        top: 35,
+                        child: Align(
+                          // alignment: Alignment.center,
+                          child: Image.asset(
+                            "assets/images/circle3.png",
+                            width: 235,
+                            height: 235,
+                          ),
+                        )
 
-                      ),
-                  Positioned(
+                    ),
+                    Positioned(
                       child: Opacity(
                         opacity: 0.3,
                         child: SvgPicture.asset("assets/images/help_icon.svg"),
                       ),
 
-                  ),
-                ],
-              ),
+                    ),
+                  ],
+                ),
+              )
+              ,
               // Container(
               //   width: 400,
               //   height: 400,

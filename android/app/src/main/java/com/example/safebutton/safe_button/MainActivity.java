@@ -53,7 +53,10 @@ public class MainActivity extends FlutterActivity {
         new MethodChannel(flutterEngine.getDartExecutor().getBinaryMessenger(), CHANNEL)
                 .setMethodCallHandler((call, result) -> {
                     if(call.method.equals("sendSms")){
-                        sendSms("0509009714", "HELP", getContext());
+                        SharedPreferences sharedPref = getContext().getSharedPreferences(
+                                "FlutterSharedPreferences", Context.MODE_PRIVATE);
+                            Log.v("Sending_SMS", "Number:" + sharedPref.getString("flutter.phoneNumber", ""));
+                            sendSms(sharedPref.getString("flutter.phoneNumber", ""), "HELP", getContext());
                     }
                 });
     }
@@ -111,7 +114,7 @@ public class MainActivity extends FlutterActivity {
                     int rssi = mtFrameHandler.getRssi();		//rssi
                     // all data frames of device（such as:iBeacon，UID，URL...）
                     ArrayList<MinewFrame> advFrames = mtFrameHandler.getAdvFrames();
-                    if(mac.equals("AC:23:3F:E0:5E:E3")){
+                    if(name.equalsIgnoreCase("plus")){
                         if(advFrames.size() > 0){
 //                            mtCentralManager.stopScan();
                             checkFrameType(advFrames);
@@ -160,8 +163,11 @@ public class MainActivity extends FlutterActivity {
                         Log.v("Sending_SMS", "Number:" + sharedPref.getString("flutter.phoneNumber", ""));
                         sendSms(sharedPref.getString("flutter.phoneNumber", ""), "HELP", getContext());
                         smsSent = true;
-//                        startScanAfterSmsSent();
+                        //startScanAfterSmsSent();
                         mtCentralManager.stopScan();
+                        mtCentralManager.stopService();
+                        mtCentralManager.disconnect(MainActivity.mtPeripheral);
+
                     }
 
 //                    mtCentralManager.startScan();
@@ -180,8 +186,10 @@ public class MainActivity extends FlutterActivity {
             @Override
             public void run() {
                 smsSent = false;
+                mtCentralManager.startService();
+                mtCentralManager.startScan();
             }
-        }, 20000);
+        }, 40000);
     }
 
     private ConnectionStatueListener connectionStatueListener = new ConnectionStatueListener() {
