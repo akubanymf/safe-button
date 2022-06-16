@@ -1,0 +1,6 @@
+{
+    "language": "עברית",
+    "@language": {
+        "description": "The current language"
+    }
+}
