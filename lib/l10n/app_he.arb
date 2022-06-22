@@ -2,5 +2,6 @@
     "language": "עברית",
     "@language": {
         "description": "The current language"
-    }
+    },
+    "phoneNumberTxt": "SMS הכניסי מספר טלפון שיקבל"
 }

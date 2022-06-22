@@ -3,8 +3,10 @@ export 'home_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:safe_button/widget/lang_picker_widget.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:butterfly_sdk_flutter_plugin/butterfly_sdk_flutter_plugin.dart';
 class HomePage extends StatefulWidget{
   @override
   State<StatefulWidget> createState() => _HomePageState();
@@ -16,38 +18,45 @@ class _HomePageState extends State<HomePage>{
   late SharedPreferences _prefs;
   static const methodChannel = MethodChannel("myChannel");
   TextEditingController? _controller;
-
+  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _scaffoldKey,
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         // Here we take the value from the MyHomePage object that was created by
         // the App.build method, and use it to set our appbar title.
         elevation: 0.0,
         backgroundColor: const Color.fromRGBO(42, 35, 60, 1),
         actions: <Widget>[
+          FloatingActionButton(
+            child: Text("🦋"), onPressed: () {
+            ButterflySdk.openReporter(withKey: "b748171e-cba0-4d22-9655-1cdce835a24a");
+            }),
+          LanguagePickerWidget(),
           IconButton(
             icon: Icon(
               Icons.settings,
               color: Colors.white,
             ),
             onPressed: () {
-              // do something
+              _scaffoldKey.currentState?.openDrawer();
             },
           )
         ],
 
       ),
-      // drawer: Drawer(
-      //   child: ListView(
-      //     padding: EdgeInsets.zero,
-      //     children: [
-      //       ListTile(
-      //         title: const Text('הגדרות')
-      //       )
-      //     ],
-      //   ),
-      // ),
+      drawer: Drawer(
+        child: ListView(
+          padding: EdgeInsets.zero,
+          children: [
+            ListTile(
+                title: const Text('הגדרות')
+            )
+          ],
+        ),
+      ),
       body: Container(
           padding: EdgeInsets.fromLTRB(20, 100, 20, 40),
           child: Column(
@@ -172,7 +181,7 @@ class _HomePageState extends State<HomePage>{
                 borderSide:
                 BorderSide(color: Color.fromRGBO(1, 160, 198, 1), width: 2)
             ),
-            hintText: AppLocalizations.of(context)!.language,
+            hintText: AppLocalizations.of(context)!.phoneNumberTxt,
             border: const OutlineInputBorder(),
             isDense: true,
             filled: true,

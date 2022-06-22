@@ -7,4 +7,15 @@ class L10n {
     const Locale('he'),
     const Locale('ar')
   ];
+
+  static String getFlag(String code){
+    switch (code) {
+      case 'ar':
+        return '🇦🇪';
+      case 'he':
+      default:
+        // return '🇭🇪';
+        return '🇮🇱';
+    }
+  }
 }

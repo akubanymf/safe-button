@@ -1,12 +1,18 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:safe_button/pages/settings/home.dart';
+import 'package:safe_button/provider/locale_provider.dart';
+import 'package:safe_button/widget/lang_picker_widget.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'l10n/l10n.dart';
+import 'package:provider/provider.dart';
+
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   // await Firebase.initializeApp();
@@ -18,21 +24,28 @@ class MyApp extends StatelessWidget {
 
   // This widget is the root of your application.
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(scaffoldBackgroundColor: const Color.fromRGBO(42, 35, 60, 1)),
-      home: HomePage(),
-      supportedLocales: L10n.all,
-      localizationsDelegates: [
+  Widget build(BuildContext context) => ChangeNotifierProvider (
+    create: (context) => LocaleProvider(const Locale('he')),
+    builder: (context, child) {
+      final provider = Provider.of<LocaleProvider>(context);
+
+  return MaterialApp(
+        title: 'Flutter Demo',
+        theme: ThemeData(scaffoldBackgroundColor: const Color.fromRGBO(42, 35, 60, 1)),
+        home: HomePage(),
+        locale: provider.locale,
+        supportedLocales: L10n.all,
+        localizationsDelegates: [
         AppLocalizations.delegate,
         GlobalMaterialLocalizations.delegate,
         GlobalCupertinoLocalizations.delegate,
       ],
     );
-  }
+  },
+  );
 }
 
+//TODO - remove this class
 class MyHomePage extends StatefulWidget {
   const MyHomePage({Key? key, required this.title}) : super(key: key);
 
@@ -119,7 +132,8 @@ class _MyHomePageState extends State<MyHomePage> {
             onPressed: () {
               // do something
             },
-          )
+          ),
+
         ],
 
       ),
