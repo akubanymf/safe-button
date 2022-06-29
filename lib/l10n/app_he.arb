@@ -3,5 +3,25 @@
     "@language": {
         "description": "The current language"
     },
-    "phoneNumberTxt": "SMS הכניסי מספר טלפון שיקבל"
+    "phoneNumberTxt": "SMS הכניסי מספר טלפון שיקבל",
+    "selectContacts": "בחירת אנשי קשר",
+    "@selectContacts": {
+            "description": "selected contacts"
+      },
+    "setupHelpMessage": "ניסוח הודעה",
+    "@setupHelpMessage": {
+            "description": "selected contacts"
+      },
+    "setupLocation": "הגדרת מיקומים",
+    "@setupLocation": {
+            "description": "selected contacts"
+      },
+    "settings": "הגדרות",
+    "@settings": {
+            "description": "selected contacts"
+     },
+    "contactUs": "צור קשר",
+    "@contactUs": {
+            "description": "selected contacts"
+      }
 }

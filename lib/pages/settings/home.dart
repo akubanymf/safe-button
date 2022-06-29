@@ -3,17 +3,18 @@ export 'home_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:safe_button/widget/app_drawer.dart';
 import 'package:safe_button/widget/lang_picker_widget.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:butterfly_sdk_flutter_plugin/butterfly_sdk_flutter_plugin.dart';
-class HomePage extends StatefulWidget{
+
+class HomePage extends StatefulWidget {
   @override
   State<StatefulWidget> createState() => _HomePageState();
-
 }
 
-class _HomePageState extends State<HomePage>{
+class _HomePageState extends State<HomePage> {
   late String _name;
   late SharedPreferences _prefs;
   static const methodChannel = MethodChannel("myChannel");
@@ -24,39 +25,25 @@ class _HomePageState extends State<HomePage>{
     return Scaffold(
       key: _scaffoldKey,
       appBar: AppBar(
-        automaticallyImplyLeading: false,
+        // automaticallyImplyLeading: false,
         // Here we take the value from the MyHomePage object that was created by
         // the App.build method, and use it to set our appbar title.
         elevation: 0.0,
         backgroundColor: const Color.fromRGBO(42, 35, 60, 1),
         actions: <Widget>[
-          FloatingActionButton(
-            child: Text("🦋"), onPressed: () {
-            ButterflySdk.openReporter(withKey: "b748171e-cba0-4d22-9655-1cdce835a24a");
-            }),
-          LanguagePickerWidget(),
-          IconButton(
-            icon: Icon(
-              Icons.settings,
-              color: Colors.white,
-            ),
-            onPressed: () {
-              _scaffoldKey.currentState?.openDrawer();
-            },
-          )
+          // LanguagePickerWidget(),
+          // IconButton(
+          //   icon: Icon(
+          //     Icons.settings,
+          //     color: Colors.white,
+          //   ),
+          //   onPressed: () {
+          //     _scaffoldKey.currentState?.openDrawer();
+          //   },
+          // )
         ],
-
       ),
-      drawer: Drawer(
-        child: ListView(
-          padding: EdgeInsets.zero,
-          children: [
-            ListTile(
-                title: const Text('הגדרות')
-            )
-          ],
-        ),
-      ),
+      endDrawer: AppDrawer(),
       body: Container(
           padding: EdgeInsets.fromLTRB(20, 100, 20, 40),
           child: Column(
@@ -64,23 +51,19 @@ class _HomePageState extends State<HomePage>{
               Column(
                 mainAxisSize: MainAxisSize.min,
                 mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Image.asset('assets/images/app_logo.png')
-                ],
+                children: [Image.asset('assets/images/app_logo.png')],
               ),
               const SizedBox(height: 60),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
-                  Container(
-
-                      child: buildPhoneTextField()),
+                  Container(child: buildPhoneTextField()),
                 ],
               ),
               SizedBox(height: 90),
               GestureDetector(
-                onTap: (){
+                onTap: () {
                   sendSms();
                 },
                 child: Stack(
@@ -88,25 +71,23 @@ class _HomePageState extends State<HomePage>{
                   children: [
                     Positioned(
                         child: Align(
-                          child: SvgPicture.asset(
-                            "assets/images/circle1.svg",
-                            height: 297,
-                            width: 297,
-                            fit: BoxFit.scaleDown,
-                          ),
-                        )
-                    ),
+                      child: SvgPicture.asset(
+                        "assets/images/circle1.svg",
+                        height: 297,
+                        width: 297,
+                        fit: BoxFit.scaleDown,
+                      ),
+                    )),
                     Positioned(
                         child: Align(
-                          // alignment: Alignment.center,
-                          child: SvgPicture.asset(
-                            "assets/images/circle2.svg",
-                            height: 270,
-                            width: 270,
-                            fit: BoxFit.scaleDown,
-                          ),
-                        )
-                    ),
+                      // alignment: Alignment.center,
+                      child: SvgPicture.asset(
+                        "assets/images/circle2.svg",
+                        height: 270,
+                        width: 270,
+                        fit: BoxFit.scaleDown,
+                      ),
+                    )),
                     Positioned(
                         top: 35,
                         child: Align(
@@ -116,20 +97,16 @@ class _HomePageState extends State<HomePage>{
                             width: 235,
                             height: 235,
                           ),
-                        )
-
-                    ),
+                        )),
                     Positioned(
                       child: Opacity(
                         opacity: 0.3,
                         child: SvgPicture.asset("assets/images/help_icon.svg"),
                       ),
-
                     ),
                   ],
                 ),
-              )
-              ,
+              ),
               // Container(
               //   width: 400,
               //   height: 400,
@@ -156,8 +133,8 @@ class _HomePageState extends State<HomePage>{
     );
   }
 
-  Future<void> sendSms() async{
-    try{
+  Future<void> sendSms() async {
+    try {
       await methodChannel.invokeMethod("sendSms");
     } on Exception catch (e) {}
   }
@@ -176,11 +153,9 @@ class _HomePageState extends State<HomePage>{
           FilteringTextInputFormatter.digitsOnly
         ],
         decoration: InputDecoration(
-
             enabledBorder: const OutlineInputBorder(
-                borderSide:
-                BorderSide(color: Color.fromRGBO(1, 160, 198, 1), width: 2)
-            ),
+                borderSide: BorderSide(
+                    color: Color.fromRGBO(1, 160, 198, 1), width: 2)),
             hintText: AppLocalizations.of(context)!.phoneNumberTxt,
             border: const OutlineInputBorder(),
             isDense: true,
@@ -195,10 +170,10 @@ class _HomePageState extends State<HomePage>{
                   padding: const EdgeInsets.all(10.0),
                   child: SizedBox(
                     height: 20,
-                    child:
-                    SvgPicture.asset("assets/images/phone.svg"),
+                    child: SvgPicture.asset("assets/images/phone.svg"),
                   ),
-                ), onTap: () {})),
+                ),
+                onTap: () {})),
         // decoration: const InputDecoration(
         //     contentPadding: EdgeInsets.fromLTRB(20, 0, 20, 0),
         //     enabledBorder: OutlineInputBorder(
@@ -220,6 +195,4 @@ class _HomePageState extends State<HomePage>{
       ),
     );
   }
-
-
 }

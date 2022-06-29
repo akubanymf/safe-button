@@ -4,6 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:safe_button/pages/contact_us/contact_us.dart';
+import 'package:safe_button/pages/contacts/contacts_view.dart';
+import 'package:safe_button/pages/location/location_view.dart';
+import 'package:safe_button/pages/message/message_view.dart';
 import 'package:safe_button/pages/settings/home.dart';
 import 'package:safe_button/provider/locale_provider.dart';
 import 'package:safe_button/widget/lang_picker_widget.dart';
@@ -12,6 +16,8 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'l10n/l10n.dart';
 import 'package:provider/provider.dart';
+
+import 'pages/settings/settings_view.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -24,25 +30,33 @@ class MyApp extends StatelessWidget {
 
   // This widget is the root of your application.
   @override
-  Widget build(BuildContext context) => ChangeNotifierProvider (
-    create: (context) => LocaleProvider(const Locale('he')),
-    builder: (context, child) {
-      final provider = Provider.of<LocaleProvider>(context);
+  Widget build(BuildContext context) => ChangeNotifierProvider(
+        create: (context) => LocaleProvider(const Locale('he')),
+        builder: (context, child) {
+          final provider = Provider.of<LocaleProvider>(context);
 
-  return MaterialApp(
-        title: 'Flutter Demo',
-        theme: ThemeData(scaffoldBackgroundColor: const Color.fromRGBO(42, 35, 60, 1)),
-        home: HomePage(),
-        locale: provider.locale,
-        supportedLocales: L10n.all,
-        localizationsDelegates: [
-        AppLocalizations.delegate,
-        GlobalMaterialLocalizations.delegate,
-        GlobalCupertinoLocalizations.delegate,
-      ],
-    );
-  },
-  );
+          return MaterialApp(
+            title: 'Flutter Demo',
+            theme: ThemeData(
+                scaffoldBackgroundColor: const Color.fromRGBO(42, 35, 60, 1)),
+            home: HomePage(),
+            locale: provider.locale,
+            supportedLocales: L10n.all,
+            localizationsDelegates: const [
+              AppLocalizations.delegate,
+              GlobalMaterialLocalizations.delegate,
+              GlobalCupertinoLocalizations.delegate,
+            ],
+            routes: {
+              '/selectContacts': (context) => const ContactsView(),
+              '/message': (context) => const MessageView(),
+              '/locationSetup': (context) => const LocationView(),
+              '/settings': (context) => const SettingsView(),
+              '/contactUs': (context) => const ContactUsView(),
+            },
+          );
+        },
+      );
 }
 
 //TODO - remove this class
@@ -103,8 +117,8 @@ class _MyHomePageState extends State<MyHomePage> {
     prefs.setString("phoneNumber", name);
   }
 
-  Future<void> sendSms() async{
-    try{
+  Future<void> sendSms() async {
+    try {
       await methodChannel.invokeMethod("sendSms");
     } on Exception catch (e) {}
   }
@@ -133,9 +147,7 @@ class _MyHomePageState extends State<MyHomePage> {
               // do something
             },
           ),
-
         ],
-
       ),
       // drawer: Drawer(
       //   child: ListView(
@@ -154,23 +166,19 @@ class _MyHomePageState extends State<MyHomePage> {
               Column(
                 mainAxisSize: MainAxisSize.min,
                 mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Image.asset('assets/images/app_logo.png')
-                ],
+                children: [Image.asset('assets/images/app_logo.png')],
               ),
               const SizedBox(height: 60),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
-                  Container(
-
-                      child: buildPhoneTextField()),
+                  Container(child: buildPhoneTextField()),
                 ],
               ),
               SizedBox(height: 90),
               GestureDetector(
-                onTap: (){
+                onTap: () {
                   sendSms();
                 },
                 child: Stack(
@@ -178,25 +186,23 @@ class _MyHomePageState extends State<MyHomePage> {
                   children: [
                     Positioned(
                         child: Align(
-                          child: SvgPicture.asset(
-                            "assets/images/circle1.svg",
-                            height: 297,
-                            width: 297,
-                            fit: BoxFit.scaleDown,
-                          ),
-                        )
-                    ),
+                      child: SvgPicture.asset(
+                        "assets/images/circle1.svg",
+                        height: 297,
+                        width: 297,
+                        fit: BoxFit.scaleDown,
+                      ),
+                    )),
                     Positioned(
                         child: Align(
-                          // alignment: Alignment.center,
-                          child: SvgPicture.asset(
-                            "assets/images/circle2.svg",
-                            height: 270,
-                            width: 270,
-                            fit: BoxFit.scaleDown,
-                          ),
-                        )
-                    ),
+                      // alignment: Alignment.center,
+                      child: SvgPicture.asset(
+                        "assets/images/circle2.svg",
+                        height: 270,
+                        width: 270,
+                        fit: BoxFit.scaleDown,
+                      ),
+                    )),
                     Positioned(
                         top: 35,
                         child: Align(
@@ -206,20 +212,16 @@ class _MyHomePageState extends State<MyHomePage> {
                             width: 235,
                             height: 235,
                           ),
-                        )
-
-                    ),
+                        )),
                     Positioned(
                       child: Opacity(
                         opacity: 0.3,
                         child: SvgPicture.asset("assets/images/help_icon.svg"),
                       ),
-
                     ),
                   ],
                 ),
-              )
-              ,
+              ),
               // Container(
               //   width: 400,
               //   height: 400,
@@ -246,67 +248,63 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
-
-
   Flexible buildPhoneTextField() {
     return Flexible(
-                  child: TextField(
-                    textAlign: TextAlign.center,
-                    keyboardType: TextInputType.number,
-                    inputFormatters: <TextInputFormatter>[
-                      FilteringTextInputFormatter.digitsOnly
-                    ],
-                    decoration: InputDecoration(
-
-                          enabledBorder: const OutlineInputBorder(
-                              borderSide:
-                                  BorderSide(color: Color.fromRGBO(1, 160, 198, 1), width: 2)
-                          ),
-                          hintText: "SMS הכניסי מספר טלפון שיקבל",
-                          border: const OutlineInputBorder(),
-                        isDense: true,
-                          filled: true,
-                          fillColor: Colors.white,
-                        suffixIconConstraints: const BoxConstraints(
-                          minWidth: 2,
-                          minHeight: 2,
-                        ),
-                        suffixIcon: InkWell(
-                            child: Padding(
-                              padding: const EdgeInsets.all(10.0),
-                              child: SizedBox(
-                                height: 20,
-                                child:
-                                SvgPicture.asset("assets/images/phone.svg"),
-                              ),
-                            ), onTap: () {})),
-                    // decoration: const InputDecoration(
-                    //     contentPadding: EdgeInsets.fromLTRB(20, 0, 20, 0),
-                    //     enabledBorder: OutlineInputBorder(
-                    //         borderSide:
-                    //             BorderSide(color: Color.fromRGBO(1, 160, 198, 1), width: 2)
-                    //     ),
-                    //     hintText: "הכניסי את מספר הטלפון שלך",
-                    //     border: OutlineInputBorder()
-                    //
-                    //
-                    // ),
-                    onChanged: (String str) {
-                      setState(() {
-                        _name = str;
-                        storeName(str);
-                      });
-                    },
-                    controller: _controller,
+      child: TextField(
+        textAlign: TextAlign.center,
+        keyboardType: TextInputType.number,
+        inputFormatters: <TextInputFormatter>[
+          FilteringTextInputFormatter.digitsOnly
+        ],
+        decoration: InputDecoration(
+            enabledBorder: const OutlineInputBorder(
+                borderSide: BorderSide(
+                    color: Color.fromRGBO(1, 160, 198, 1), width: 2)),
+            hintText: "SMS הכניסי מספר טלפון שיקבל",
+            border: const OutlineInputBorder(),
+            isDense: true,
+            filled: true,
+            fillColor: Colors.white,
+            suffixIconConstraints: const BoxConstraints(
+              minWidth: 2,
+              minHeight: 2,
+            ),
+            suffixIcon: InkWell(
+                child: Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: SizedBox(
+                    height: 20,
+                    child: SvgPicture.asset("assets/images/phone.svg"),
                   ),
-                );
+                ),
+                onTap: () {})),
+        // decoration: const InputDecoration(
+        //     contentPadding: EdgeInsets.fromLTRB(20, 0, 20, 0),
+        //     enabledBorder: OutlineInputBorder(
+        //         borderSide:
+        //             BorderSide(color: Color.fromRGBO(1, 160, 198, 1), width: 2)
+        //     ),
+        //     hintText: "הכניסי את מספר הטלפון שלך",
+        //     border: OutlineInputBorder()
+        //
+        //
+        // ),
+        onChanged: (String str) {
+          setState(() {
+            _name = str;
+            storeName(str);
+          });
+        },
+        controller: _controller,
+      ),
+    );
   }
 }
+
 class OpenPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
-    var paint1 = Paint()
-      ..color = Color(0xffaa44aa);
+    var paint1 = Paint()..color = Color(0xffaa44aa);
 
     canvas.drawCircle(Offset(200, 200), 100, paint1);
   }
