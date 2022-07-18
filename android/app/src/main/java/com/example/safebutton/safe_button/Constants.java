@@ -14,6 +14,7 @@ public class  Constants {
             Manifest.permission.BLUETOOTH_ADVERTISE,
             Manifest.permission.WRITE_EXTERNAL_STORAGE,
             Manifest.permission.BLUETOOTH_CONNECT,
-            Manifest.permission.SEND_SMS
+            Manifest.permission.SEND_SMS,
+            Manifest.permission.READ_CONTACTS,
     };
 }

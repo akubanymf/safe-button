@@ -54,6 +54,7 @@ android {
 dependencies {
     implementation files('libs/MTBeaconPlus.jar')
     implementation 'no.nordicsemi.android:dfu:1.9.1'
+    implementation 'com.google.code.gson:gson:2.9.0'
 }
 flutter {
     source '../..'

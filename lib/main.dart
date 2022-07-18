@@ -48,7 +48,7 @@ class MyApp extends StatelessWidget {
               GlobalCupertinoLocalizations.delegate,
             ],
             routes: {
-              '/selectContacts': (context) => const ContactsView(),
+              '/selectContacts': (context) =>  ContactsView(),
               '/message': (context) => const MessageView(),
               '/locationSetup': (context) => const LocationView(),
               '/settings': (context) => const SettingsView(),

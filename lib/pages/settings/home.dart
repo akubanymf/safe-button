@@ -19,28 +19,19 @@ class _HomePageState extends State<HomePage> {
   late SharedPreferences _prefs;
   static const methodChannel = MethodChannel("myChannel");
   TextEditingController? _controller;
-  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      key: _scaffoldKey,
       appBar: AppBar(
         // automaticallyImplyLeading: false,
         // Here we take the value from the MyHomePage object that was created by
         // the App.build method, and use it to set our appbar title.
         elevation: 0.0,
+        title: Center(child: Image.asset('assets/images/app_logo.png')),
         backgroundColor: const Color.fromRGBO(42, 35, 60, 1),
         actions: <Widget>[
-          // LanguagePickerWidget(),
-          // IconButton(
-          //   icon: Icon(
-          //     Icons.settings,
-          //     color: Colors.white,
-          //   ),
-          //   onPressed: () {
-          //     _scaffoldKey.currentState?.openDrawer();
-          //   },
-          // )
+
         ],
       ),
       endDrawer: AppDrawer(),
@@ -48,20 +39,16 @@ class _HomePageState extends State<HomePage> {
           padding: EdgeInsets.fromLTRB(20, 100, 20, 40),
           child: Column(
             children: [
-              Column(
-                mainAxisSize: MainAxisSize.min,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [Image.asset('assets/images/app_logo.png')],
-              ),
+
               const SizedBox(height: 60),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: <Widget>[
-                  Container(child: buildPhoneTextField()),
-                ],
-              ),
-              SizedBox(height: 90),
+              // Row(
+              //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              //   crossAxisAlignment: CrossAxisAlignment.center,
+              //   children: <Widget>[
+              //     Container(child: buildPhoneTextField()),
+              //   ],
+              // ),
+              //SizedBox(height: 90),
               GestureDetector(
                 onTap: () {
                   sendSms();

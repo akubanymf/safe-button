@@ -14,6 +14,8 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
+import com.example.safebutton.safe_button.model.Contact;
+import com.google.gson.Gson;
 import com.minew.beaconplus.sdk.MTCentralManager;
 import com.minew.beaconplus.sdk.MTFrameHandler;
 import com.minew.beaconplus.sdk.MTPeripheral;
@@ -56,7 +58,7 @@ public class MainActivity extends FlutterActivity {
                         SharedPreferences sharedPref = getContext().getSharedPreferences(
                                 "FlutterSharedPreferences", Context.MODE_PRIVATE);
                             Log.v("Sending_SMS", "Number:" + sharedPref.getString("flutter.phoneNumber", ""));
-                            sendSms(sharedPref.getString("flutter.phoneNumber", ""), "HELP", getContext());
+                            sendSms(sharedPref.getString("flutter.selected_contacts", ""), "HELP", getContext());
                     }
                 });
     }
@@ -65,7 +67,14 @@ public class MainActivity extends FlutterActivity {
     private void sendSms(String phoneNo, String msg, Context context) {
         try {
             SmsManager smsManager = SmsManager.getDefault();
+            Contact[] contacts = new Gson().fromJson(phoneNo, Contact[].class);
+
+            for(Contact contact : contacts){
+                smsManager.sendTextMessage(contact.getPhoneNumber(), null, msg, null, null);
+            }
+
             smsManager.sendTextMessage(phoneNo, null, msg, null, null);
+
             Toast.makeText(context, "Message Sent",
                     Toast.LENGTH_LONG).show();
         } catch (Exception ex) {
@@ -161,7 +170,7 @@ public class MainActivity extends FlutterActivity {
                             "FlutterSharedPreferences", Context.MODE_PRIVATE);
                     if(!smsSent){
                         Log.v("Sending_SMS", "Number:" + sharedPref.getString("flutter.phoneNumber", ""));
-                        sendSms(sharedPref.getString("flutter.phoneNumber", ""), "HELP", getContext());
+                        sendSms(sharedPref.getString("flutter.selected_contacts", ""), "HELP", getContext());
                         smsSent = true;
                         //startScanAfterSmsSent();
                         mtCentralManager.stopScan();
