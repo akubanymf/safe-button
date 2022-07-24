@@ -11,7 +11,7 @@ import 'dart:convert';
 class ContactsView extends StatefulWidget {
   static const String routeName = '/selectContacts';
 
-  ContactsView({Key? key}) : super(key: key);
+  const ContactsView({Key? key}) : super(key: key);
 
   @override
   State<StatefulWidget> createState() => _ContactsViewState();
@@ -147,7 +147,7 @@ class _ContactsViewState extends State<ContactsView> {
         contacts = [customContact];
       });
     }else{
-      List<CustomContact> contacts = CustomContact.decode(contactsString!);
+      List<CustomContact> contacts = CustomContact.decode(contactsString);
       contacts.add(customContact);
       await _pref!.setString('selected_contacts', CustomContact.encode(contacts));
       setState(() {
@@ -181,6 +181,7 @@ class _ContactsViewState extends State<ContactsView> {
                       _deleteContact(index);
                     },
                   ),
+
                   Flexible(
                       fit: FlexFit.tight,
                       child: Align(

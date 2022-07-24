@@ -28,11 +28,13 @@ class _HomePageState extends State<HomePage> {
         // Here we take the value from the MyHomePage object that was created by
         // the App.build method, and use it to set our appbar title.
         elevation: 0.0,
-        title: Center(child: Image.asset('assets/images/app_logo.png')),
+        centerTitle: true,
+        title: Row(
+          children: [
+            Expanded(child: Image.asset('assets/images/app_logo.png', fit: BoxFit.scaleDown, height: 60,)),
+          ],
+        ),
         backgroundColor: const Color.fromRGBO(42, 35, 60, 1),
-        actions: <Widget>[
-
-        ],
       ),
       endDrawer: AppDrawer(),
       body: Container(

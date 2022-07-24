@@ -15,6 +15,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 
 import com.example.safebutton.safe_button.model.Contact;
+import com.example.safebutton.safe_button.utils.GpsTracker;
 import com.google.gson.Gson;
 import com.minew.beaconplus.sdk.MTCentralManager;
 import com.minew.beaconplus.sdk.MTFrameHandler;
@@ -58,19 +59,30 @@ public class MainActivity extends FlutterActivity {
                         SharedPreferences sharedPref = getContext().getSharedPreferences(
                                 "FlutterSharedPreferences", Context.MODE_PRIVATE);
                             Log.v("Sending_SMS", "Number:" + sharedPref.getString("flutter.phoneNumber", ""));
-                            sendSms(sharedPref.getString("flutter.selected_contacts", ""), "HELP", getContext());
+                        sendSms(sharedPref.getString("flutter.selected_contacts", ""),
+                                sharedPref.getString("flutter.selected_message", "HELP"),
+                                sharedPref.getString("flutter.use_location", "false").equals("true") ? true : false,
+                                getContext());
                     }
                 });
     }
 
 
-    private void sendSms(String phoneNo, String msg, Context context) {
+    private void sendSms(String phoneNo, String msg, boolean sendLocation, Context context) {
         try {
+            GpsTracker gpsTracker =  new GpsTracker(MainActivity.this);
+            String url = "";
+            if(gpsTracker.canGetLocation() && sendLocation){
+                double latitude = gpsTracker.getLatitude();
+                double longitude = gpsTracker.getLongitude();
+                url = "http://maps.google.com/maps?q=" + latitude + "," + longitude + "";
+            }
+
             SmsManager smsManager = SmsManager.getDefault();
             Contact[] contacts = new Gson().fromJson(phoneNo, Contact[].class);
 
             for(Contact contact : contacts){
-                smsManager.sendTextMessage(contact.getPhoneNumber(), null, msg, null, null);
+                smsManager.sendTextMessage(contact.getPhoneNumber(), null, msg + " " + url, null, null);
             }
 
             smsManager.sendTextMessage(phoneNo, null, msg, null, null);
@@ -170,7 +182,10 @@ public class MainActivity extends FlutterActivity {
                             "FlutterSharedPreferences", Context.MODE_PRIVATE);
                     if(!smsSent){
                         Log.v("Sending_SMS", "Number:" + sharedPref.getString("flutter.phoneNumber", ""));
-                        sendSms(sharedPref.getString("flutter.selected_contacts", ""), "HELP", getContext());
+                        sendSms(sharedPref.getString("flutter.selected_contacts", ""),
+                                sharedPref.getString("flutter.selected_message", "HELP"),
+                                sharedPref.getString("flutter.use_location", "false").equals("true") ? true : false,
+                                getContext());
                         smsSent = true;
                         //startScanAfterSmsSent();
                         mtCentralManager.stopScan();
