@@ -4,7 +4,7 @@
         "description": "The current language"
     },
     "phoneNumberTxt": "SMS הכניסי מספר טלפון שיקבל",
-    "selectContacts": "בחירת אנשי קשר",
+    "selectContacts": "הוספת אנשי קשר",
     "@selectContacts": {
             "description": "selected contacts"
       },

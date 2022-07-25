@@ -10,6 +10,7 @@ import 'package:safe_button/pages/location/location_view.dart';
 import 'package:safe_button/pages/message/message_view.dart';
 import 'package:safe_button/pages/settings/home.dart';
 import 'package:safe_button/provider/locale_provider.dart';
+import 'package:safe_button/utils/app_colors.dart';
 import 'package:safe_button/widget/lang_picker_widget.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -38,7 +39,7 @@ class MyApp extends StatelessWidget {
           return MaterialApp(
             title: 'Flutter Demo',
             theme: ThemeData(
-                scaffoldBackgroundColor: const Color.fromRGBO(42, 35, 60, 1)),
+                scaffoldBackgroundColor: AppColors.appMainColor),
             home: HomePage(),
             locale: provider.locale,
             supportedLocales: L10n.all,
@@ -136,7 +137,7 @@ class _MyHomePageState extends State<MyHomePage> {
         // Here we take the value from the MyHomePage object that was created by
         // the App.build method, and use it to set our appbar title.
         elevation: 0.0,
-        backgroundColor: const Color.fromRGBO(42, 35, 60, 1),
+        backgroundColor: AppColors.appMainColor,
         actions: <Widget>[
           IconButton(
             icon: Icon(

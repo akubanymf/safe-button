@@ -40,7 +40,6 @@ dependencies:
   cupertino_icons: ^1.0.2
   flutter_svg: ^1.0.3
   fluttercontactpicker: ^4.6.0
-
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -66,18 +65,7 @@ flutter:
   generate: true
   # To add assets to your application, add an assets section, like this:
   assets:
-    - assets/images/help_icon.svg
-    - assets/images/app_logo.png
-    - assets/images/phone.svg
-    - assets/images/circle1.svg
-    - assets/images/circle2.svg
-    - assets/images/circle3.svg
-    - assets/images/circle3.png
-    - assets/images/plus_sign.svg
-    - assets/images/remove.svg
-    - assets/images/contact_person.svg
-    - assets/images/go_back.svg
-    - assets/images/location.svg
+    - assets/images/
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

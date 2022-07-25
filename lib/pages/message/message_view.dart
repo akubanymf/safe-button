@@ -105,10 +105,8 @@ class _MessageViewState extends State<MessageView> {
                     highlightColor: Colors.transparent,
                     icon: !locationToggle
                     ? SvgPicture.asset(
-                      "assets/images/location.svg",
-                      height: 270,
-                      width: 270,
-                      fit: BoxFit.scaleDown,
+                      "assets/images/send-location.svg",
+                      fit: BoxFit.fitHeight,
                     ) : const Icon(Icons.location_on),
                     onPressed: () {
                       setState(() {

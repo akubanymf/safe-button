@@ -3,12 +3,13 @@ export 'home_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:safe_button/utils/app_colors.dart';
 import 'package:safe_button/widget/app_drawer.dart';
 import 'package:safe_button/widget/lang_picker_widget.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:butterfly_sdk_flutter_plugin/butterfly_sdk_flutter_plugin.dart';
-
+import 'package:safe_button/routes/routes.dart';
 class HomePage extends StatefulWidget {
   @override
   State<StatefulWidget> createState() => _HomePageState();
@@ -34,9 +35,15 @@ class _HomePageState extends State<HomePage> {
             Expanded(child: Image.asset('assets/images/app_logo.png', fit: BoxFit.scaleDown, height: 60,)),
           ],
         ),
-        backgroundColor: const Color.fromRGBO(42, 35, 60, 1),
+        backgroundColor: AppColors.appMainColor,
+        actions: [
+          IconButton(
+            icon: Icon(Icons.menu),
+            onPressed: () => Navigator.pushNamed(context, routes.settings),
+          )
+        ] ,
       ),
-      endDrawer: AppDrawer(),
+      // endDrawer: AppDrawer(),
       body: Container(
           padding: EdgeInsets.fromLTRB(20, 100, 20, 40),
           child: Column(
