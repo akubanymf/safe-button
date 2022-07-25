@@ -1,5 +1,4 @@
 import 'dart:typed_data';
-import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -7,7 +6,6 @@ import 'package:fluttercontactpicker/fluttercontactpicker.dart';
 import 'package:safe_button/Model/custom_contact.dart';
 import 'package:safe_button/utils/app_colors.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'dart:convert';
 
 class ContactsView extends StatefulWidget {
   static const String routeName = '/selectContacts';
@@ -34,7 +32,7 @@ class _ContactsViewState extends State<ContactsView> {
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        backgroundColor: Color.fromRGBO(10, 124, 164, 1),
+        backgroundColor: const Color.fromRGBO(10, 124, 164, 1),
         leading: GestureDetector(
           onTap: () {
             Navigator.of(context).pop();
@@ -55,7 +53,7 @@ class _ContactsViewState extends State<ContactsView> {
         centerTitle: true,
         actions: [
           Padding(
-              padding: EdgeInsets.only(right: 20.0),
+              padding: const EdgeInsets.only(right: 20.0),
               child: GestureDetector(
                 onTap: () {
                   Navigator.of(context).pop();
@@ -76,7 +74,7 @@ class _ContactsViewState extends State<ContactsView> {
               children: [
                 _createContacts(),
                 const SizedBox(height: 60),
-                contacts != null && (contacts?.length! ?? 0) < 5
+                contacts != null && (contacts?.length ?? 0) < 5
                     ? (IconButton(
                         onPressed: () {
                           _getPhoneContact();
@@ -86,7 +84,7 @@ class _ContactsViewState extends State<ContactsView> {
                           fit: BoxFit.scaleDown,
                         ),
                       ))
-                    : (SizedBox.shrink()),
+                    : (const SizedBox.shrink()),
                 const SizedBox(height: 60),
                 const Text(
                   'ניתן להוסיף עד 5 אנשי קשר',
@@ -141,7 +139,6 @@ class _ContactsViewState extends State<ContactsView> {
     setState(() {
       this.contacts = contacts;
     });
-    print(contacts);
   }
 
   Future<void> _insertContactToSharedPref(

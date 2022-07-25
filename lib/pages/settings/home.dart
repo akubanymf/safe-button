@@ -11,6 +11,8 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:butterfly_sdk_flutter_plugin/butterfly_sdk_flutter_plugin.dart';
 import 'package:safe_button/routes/routes.dart';
 class HomePage extends StatefulWidget {
+  const HomePage({Key? key}) : super(key: key);
+
   @override
   State<StatefulWidget> createState() => _HomePageState();
 }
@@ -39,7 +41,7 @@ class _HomePageState extends State<HomePage> {
         actions: [
           IconButton(
             icon: Icon(Icons.menu),
-            onPressed: () => Navigator.pushNamed(context, routes.settings),
+            onPressed: () => Navigator.pushNamed(context, Routes.settings),
           )
         ] ,
       ),

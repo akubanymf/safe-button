@@ -5,7 +5,7 @@ import 'package:safe_button/pages/message/message_view.dart';
 
 import '../pages/settings/settings_view.dart';
 
-class routes {
+class Routes {
   static const String contacts = ContactsView.routeName;
   static const String message = MessageView.routeName;
   static const String location = LocationView.routeName;

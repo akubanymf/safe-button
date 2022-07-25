@@ -4,6 +4,8 @@ import 'package:safe_button/l10n/l10n.dart';
 import 'package:safe_button/provider/locale_provider.dart';
 
 class LanguageWidget extends StatelessWidget {
+  const LanguageWidget({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     final locale = Localizations.localeOf(context);
@@ -15,7 +17,7 @@ class LanguageWidget extends StatelessWidget {
         radius: 72,
         child: Text(
           flag,
-          style: TextStyle(fontSize: 80),
+          style: const TextStyle(fontSize: 80),
         ),
       ),
     );
@@ -23,6 +25,8 @@ class LanguageWidget extends StatelessWidget {
 }
 
 class LanguagePickerWidget extends StatelessWidget {
+  const LanguagePickerWidget({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     final provider = Provider.of<LocaleProvider>(context);
@@ -40,7 +44,7 @@ class LanguagePickerWidget extends StatelessWidget {
               child: Center(
                 child: Text(
                   flag,
-                  style: TextStyle(fontSize: 26),
+                  style: const TextStyle(fontSize: 26),
                 ),
               ),
               value: locale,

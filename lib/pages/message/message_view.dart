@@ -21,13 +21,13 @@ class _MessageViewState extends State<MessageView> {
     _populateMessage();
     _setLocationButton();
   }
-  var _controller = TextEditingController();
+  final _controller = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        backgroundColor: Color.fromRGBO(10, 124, 164, 1),
+        backgroundColor: const Color.fromRGBO(10, 124, 164, 1),
         leading: GestureDetector(
           onTap: () async {
             await _saveMessageAndLocationSettings();
@@ -49,7 +49,7 @@ class _MessageViewState extends State<MessageView> {
         centerTitle: true,
         actions: [
           Padding(
-              padding: EdgeInsets.only(right: 20.0),
+              padding: const EdgeInsets.only(right: 20.0),
               child: GestureDetector(
                 onTap: () {
                   Navigator.of(context).pop();
@@ -77,7 +77,7 @@ class _MessageViewState extends State<MessageView> {
                 decoration: InputDecoration(
                     suffixIcon: IconButton(
                         onPressed: _controller.clear,
-                      icon: Icon(Icons.message),
+                      icon: const Icon(Icons.message),
                     ),
                     filled: true,
                     hintStyle: TextStyle(color: Colors.grey[800]),
@@ -142,7 +142,7 @@ class _MessageViewState extends State<MessageView> {
 
   Future<void> _setLocationButton() async {
     _pref ??= await SharedPreferences.getInstance();
-    final String? location = await _pref!.getString('use_location');
+    final String? location = _pref!.getString('use_location');
     if (location != null) {
       setState(() {
         locationToggle = location == 'true' ? true : false;

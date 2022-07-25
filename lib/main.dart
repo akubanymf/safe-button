@@ -1,7 +1,4 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:safe_button/pages/contact_us/contact_us.dart';
@@ -11,7 +8,6 @@ import 'package:safe_button/pages/message/message_view.dart';
 import 'package:safe_button/pages/settings/home.dart';
 import 'package:safe_button/provider/locale_provider.dart';
 import 'package:safe_button/utils/app_colors.dart';
-import 'package:safe_button/widget/lang_picker_widget.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -49,7 +45,7 @@ class MyApp extends StatelessWidget {
               GlobalCupertinoLocalizations.delegate,
             ],
             routes: {
-              '/selectContacts': (context) =>  ContactsView(),
+              '/selectContacts': (context) =>  const ContactsView(),
               '/message': (context) => const MessageView(),
               '/locationSetup': (context) => const LocationView(),
               '/settings': (context) => const SettingsView(),
@@ -89,7 +85,7 @@ class _MyHomePageState extends State<MyHomePage> {
     }
 
     setState(() {
-      _controller = new TextEditingController(text: _name);
+      _controller = TextEditingController(text: _name);
     });
   }
 
@@ -102,14 +98,11 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   Future<dynamic> nativeMethodCallHandler(MethodCall methodCall) async {
-    print('Native call!');
     switch (methodCall.method) {
       case "messageSent":
         return "This data from flutter.....";
-        break;
       default:
         return "0509009714";
-        break;
     }
   }
 
@@ -121,7 +114,7 @@ class _MyHomePageState extends State<MyHomePage> {
   Future<void> sendSms() async {
     try {
       await methodChannel.invokeMethod("sendSms");
-    } on Exception catch (e) {}
+    } on Exception {}
   }
 
   @override
@@ -140,7 +133,7 @@ class _MyHomePageState extends State<MyHomePage> {
         backgroundColor: AppColors.appMainColor,
         actions: <Widget>[
           IconButton(
-            icon: Icon(
+            icon: const Icon(
               Icons.settings,
               color: Colors.white,
             ),
@@ -161,7 +154,7 @@ class _MyHomePageState extends State<MyHomePage> {
       //   ),
       // ),
       body: Container(
-          padding: EdgeInsets.fromLTRB(20, 100, 20, 40),
+          padding: const EdgeInsets.fromLTRB(20, 100, 20, 40),
           child: Column(
             children: [
               Column(
@@ -177,7 +170,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   Container(child: buildPhoneTextField()),
                 ],
               ),
-              SizedBox(height: 90),
+              const SizedBox(height: 90),
               GestureDetector(
                 onTap: () {
                   sendSms();
@@ -305,9 +298,9 @@ class _MyHomePageState extends State<MyHomePage> {
 class OpenPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
-    var paint1 = Paint()..color = Color(0xffaa44aa);
+    var paint1 = Paint()..color = const Color(0xffaa44aa);
 
-    canvas.drawCircle(Offset(200, 200), 100, paint1);
+    canvas.drawCircle(const Offset(200, 200), 100, paint1);
   }
 
   @override

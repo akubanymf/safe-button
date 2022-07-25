@@ -11,7 +11,7 @@ class AppDrawer extends StatelessWidget {
     Key? key,
   }) : super(key: key);
 
-  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   Widget build(BuildContext context) {
@@ -20,17 +20,17 @@ class AppDrawer extends StatelessWidget {
       child: Align(
         alignment: Alignment.topRight,
         child: ClipRRect(
-          borderRadius: new BorderRadius.vertical(
-              bottom: new Radius.elliptical(
+          borderRadius: BorderRadius.vertical(
+              bottom: Radius.elliptical(
                   MediaQuery.of(context).size.width, 100.0)),
           child: Container(
             height: MediaQuery.of(context).size.height * 0.5,
             width: MediaQuery.of(context).size.width,
             child: Drawer(
-                backgroundColor: Color.fromRGBO(10, 124, 164, 1),
+                backgroundColor: const Color.fromRGBO(10, 124, 164, 1),
                 key: _scaffoldKey,
                 child: Padding(
-                  padding: EdgeInsets.all(20.0),
+                  padding: const EdgeInsets.all(20.0),
                   child: ListView(
                     children: <Widget>[
                       IntrinsicHeight(
@@ -72,7 +72,7 @@ class AppDrawer extends StatelessWidget {
                               height: 36,
                               fit: BoxFit.scaleDown),
                           onTap: () {
-                            Navigator.pushNamed(context, routes.contacts);
+                            Navigator.pushNamed(context, Routes.contacts);
                           }),
                       ListTile(
                           title: Align(
@@ -87,7 +87,7 @@ class AppDrawer extends StatelessWidget {
                               height: 36,
                               fit: BoxFit.scaleDown),
                           onTap: () {
-                            Navigator.pushNamed(context, routes.message);
+                            Navigator.pushNamed(context, Routes.message);
                           }),
                       // ListTile(
                       //     title: Align(alignment: Alignment.centerRight,child: Text(AppLocalizations.of(context)!.setupLocation)),
@@ -109,7 +109,7 @@ class AppDrawer extends StatelessWidget {
                               height: 36,
                               fit: BoxFit.scaleDown),
                           onTap: () {
-                            Navigator.pushNamed(context, routes.contactUs);
+                            Navigator.pushNamed(context, Routes.contactUs);
                           }),
                       ListTile(
                         title: const Text('🦋'),

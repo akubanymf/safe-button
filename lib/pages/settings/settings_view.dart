@@ -19,7 +19,7 @@ class SettingsView extends StatelessWidget {
         centerTitle: true,
         actions: [
           Padding(
-              padding: EdgeInsets.only(right: 20.0),
+              padding: const EdgeInsets.only(right: 20.0),
               child: GestureDetector(
                 onTap: () {
                   Navigator.of(context).pop();
@@ -43,7 +43,7 @@ class SettingsView extends StatelessWidget {
               height: MediaQuery.of(context).size.height * 0.5,
               width: MediaQuery.of(context).size.width,
               child: Drawer(
-                  backgroundColor: Color.fromRGBO(10, 124, 164, 1),
+                  backgroundColor: const Color.fromRGBO(10, 124, 164, 1),
                   child: Padding(
                     padding: const EdgeInsets.all(20.0),
                     child: ListView(
@@ -101,7 +101,7 @@ class SettingsView extends StatelessWidget {
                                 height: 36,
                                 fit: BoxFit.scaleDown),
                             onTap: () {
-                              Navigator.pushNamed(context, routes.message);
+                              Navigator.pushNamed(context, Routes.message);
                             }),
                         // ListTile(
                         //     title: Align(alignment: Alignment.centerRight,child: Text(AppLocalizations.of(context)!.setupLocation)),
@@ -162,7 +162,7 @@ class _SettingsListTileState extends State<SettingsListTile> {
             height: 36,
             fit: BoxFit.scaleDown),
         onTap: () {
-          Navigator.pushNamed(context, routes.contactUs);
+          Navigator.pushNamed(context, Routes.contactUs);
         });
   }
 }
