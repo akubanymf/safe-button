@@ -12,7 +12,7 @@ class MessageView extends StatefulWidget {
 }
 
 class _MessageViewState extends State<MessageView> {
-  bool locationToggle = false;
+  bool locationToggle =  true;
   static SharedPreferences? _pref;
 
   @override
@@ -75,13 +75,13 @@ class _MessageViewState extends State<MessageView> {
                 maxLines: 6,
                 keyboardType: TextInputType.multiline,
                 decoration: InputDecoration(
-                    suffixIcon: IconButton(
-                        onPressed: _controller.clear,
-                      icon: const Icon(Icons.message),
-                    ),
+                    // suffixIcon: IconButton(
+                    //     onPressed: _controller.clear,
+                    //   icon: const Icon(Icons.message),
+                    // ),
                     filled: true,
                     hintStyle: TextStyle(color: Colors.grey[800]),
-                    hintText: "",
+                    hintText: "הקלידי הודעה כאן",
                     fillColor: Colors.white),
               ),
             ),
@@ -96,14 +96,14 @@ class _MessageViewState extends State<MessageView> {
                       child: Align(
                         alignment: Alignment.centerRight,
                         child: Text(
-                          'שלחי מיקום',
+                          'שליחת מיקום',
                           style: TextStyle(color: Colors.white),
                         ),
                       )),
                   IconButton(
                     splashColor: Colors.transparent,
                     highlightColor: Colors.transparent,
-                    icon: !locationToggle
+                    icon: locationToggle
                     ? SvgPicture.asset(
                       "assets/images/send-location.svg",
                       fit: BoxFit.fitHeight,

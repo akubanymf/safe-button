@@ -74,17 +74,10 @@ class _ContactsViewState extends State<ContactsView> {
               children: [
                 _createContacts(),
                 const SizedBox(height: 60),
-                contacts != null && (contacts?.length ?? 0) < 5
-                    ? (IconButton(
-                        onPressed: () {
-                          _getPhoneContact();
-                        },
-                        icon: SvgPicture.asset(
-                          "assets/images/plus_sign.svg",
-                          fit: BoxFit.scaleDown,
-                        ),
-                      ))
-                    : (const SizedBox.shrink()),
+            (contacts == null ? buildAddContactsIcon() : const SizedBox.shrink()),
+                (contacts != null && (contacts?.length ?? 0) < 5
+                    ? (buildAddContactsIcon())
+                    : (const SizedBox.shrink())),
                 const SizedBox(height: 60),
                 const Text(
                   'ניתן להוסיף עד 5 אנשי קשר',
@@ -98,25 +91,44 @@ class _ContactsViewState extends State<ContactsView> {
     );
   }
 
+  IconButton buildAddContactsIcon() {
+    return IconButton(
+                      onPressed: () {
+                        _getPhoneContact();
+                      },
+                      icon: SvgPicture.asset(
+                        "assets/images/plus_sign.svg",
+                        fit: BoxFit.scaleDown,
+                      ),
+                    );
+  }
+
   Future<PhoneContact> _getPhoneContact() async {
-    FullContact fullContact = await FlutterContactPicker.pickFullContact();
-    String? fullName;
-    if (fullContact.name!.lastName != null) {
-      fullName =
-          fullContact.name!.firstName! + ' ' + fullContact.name!.lastName!;
-    } else {
-      fullName = fullContact.name!.firstName!;
+    FullContact? fullContact;
+    try{
+      FullContact fullContact = await FlutterContactPicker.pickFullContact();
+      String? fullName;
+      if (fullContact.name!.lastName != null) {
+        fullName =
+            fullContact.name!.firstName! + ' ' + fullContact.name!.lastName!;
+      } else {
+        fullName = fullContact.name!.firstName!;
+      }
+      PhoneNumber phoneNumber = fullContact.phones.first;
+      PhoneContact contact = PhoneContact(fullName, phoneNumber);
+      Uint8List photo;
+      if (fullContact.photo == null) {
+        photo = Uint8List(0);
+      } else {
+        photo = fullContact.photo!.bytes;
+      }
+      await _insertContactToSharedPref(contact, photo);
+      return contact;
+    }catch (e){
+      return const PhoneContact('', PhoneNumber('', ''));
     }
-    PhoneNumber phoneNumber = fullContact.phones.first;
-    PhoneContact contact = PhoneContact(fullName, phoneNumber);
-    Uint8List photo;
-    if (fullContact.photo == null) {
-      photo = Uint8List(0);
-    } else {
-      photo = fullContact.photo!.bytes;
-    }
-    await _insertContactToSharedPref(contact, photo);
-    return contact;
+
+
   }
 
   void _populateContacts() async {
@@ -133,9 +145,13 @@ class _ContactsViewState extends State<ContactsView> {
   Future<void> _deleteContact(int index) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     final String? contactsString = prefs.getString('selected_contacts');
+    final String? phoneOnlyString = prefs.getString('sms_numbers');
     List<CustomContact> contacts = CustomContact.decode(contactsString!);
+    List<CustomContact> contactsPhoneOnly = CustomContact.decode(phoneOnlyString!);
     contacts.removeAt(index);
+    contactsPhoneOnly.removeAt(index);
     await prefs.setString('selected_contacts', CustomContact.encode(contacts));
+    await prefs.setString('sms_numbers', CustomContact.encode(contactsPhoneOnly));
     setState(() {
       this.contacts = contacts;
     });
@@ -146,10 +162,15 @@ class _ContactsViewState extends State<ContactsView> {
     String byteImageString = String.fromCharCodes(byteImage);
     CustomContact customContact = CustomContact(
         contact.phoneNumber?.number, contact.fullName, byteImageString);
+    CustomContact phoneNumbersOnlyContacts = CustomContact(
+        contact.phoneNumber?.number, contact.fullName, "");
     final String? contactsString = _pref!.getString('selected_contacts');
+    final String? phoneNumbersOnlyContactsString = _pref!.getString('sms_numbers');
     if (contactsString == null) {
       _pref!.setString(
           'selected_contacts', CustomContact.encode([customContact]));
+      _pref!.setString(
+          'sms_numbers', CustomContact.encode([phoneNumbersOnlyContacts]));
       setState(() {
         contacts = [customContact];
       });
@@ -158,9 +179,18 @@ class _ContactsViewState extends State<ContactsView> {
       contacts.add(customContact);
       await _pref!
           .setString('selected_contacts', CustomContact.encode(contacts));
+      // await _pref.setString("sms_numbers", CustomContact.encode(phoneNumbersOnlyContacts))
       setState(() {
         this.contacts = contacts;
       });
+    }
+    if (phoneNumbersOnlyContactsString == null) {
+      await _pref!.setString(
+          'sms_numbers', CustomContact.encode([phoneNumbersOnlyContacts]));
+    } else {
+      List<CustomContact> contacts = CustomContact.decode(phoneNumbersOnlyContactsString);
+      contacts.add(phoneNumbersOnlyContacts);
+      await _pref!.setString("sms_numbers", CustomContact.encode(contacts));
     }
   }
 

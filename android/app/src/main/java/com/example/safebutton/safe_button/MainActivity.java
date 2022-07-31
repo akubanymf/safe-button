@@ -31,6 +31,9 @@ import com.minew.beaconplus.sdk.interfaces.GetPasswordListener;
 import com.minew.beaconplus.sdk.interfaces.MTCentralManagerListener;
 import com.minew.beaconplus.sdk.interfaces.OnBluetoothStateChangedListener;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -59,9 +62,13 @@ public class MainActivity extends FlutterActivity {
                         SharedPreferences sharedPref = getContext().getSharedPreferences(
                                 "FlutterSharedPreferences", Context.MODE_PRIVATE);
                             Log.v("Sending_SMS", "Number:" + sharedPref.getString("flutter.phoneNumber", ""));
-                        sendSms(sharedPref.getString("flutter.selected_contacts", ""),
-                                sharedPref.getString("flutter.selected_message", "HELP"),
-                                sharedPref.getString("flutter.use_location", "false").equals("true") ? true : false,
+                        String message = sharedPref.getString("flutter.selected_message", "אני צריכה עזרה").equals("") ?
+                                "אני צריכה עזרה" : sharedPref.getString("flutter.selected_message", "אני צריכה עזרה");
+                        boolean sendLocation = sharedPref.getString("flutter.use_location", "").isEmpty() ?
+                                true : (sharedPref.getString("flutter.use_location", "false").equals("true") ? true : false);
+                        sendSms(sharedPref.getString("flutter.sms_numbers", ""),
+                                message,
+                                sendLocation,
                                 getContext());
                     }
                 });
@@ -80,9 +87,22 @@ public class MainActivity extends FlutterActivity {
 
             SmsManager smsManager = SmsManager.getDefault();
             Contact[] contacts = new Gson().fromJson(phoneNo, Contact[].class);
+            if(contacts == null){
+                Toast.makeText(context, "לא הוגדרו מספרי טלפון לשליחה",
+                        Toast.LENGTH_LONG).show();
+                return;
+            }
+            JSONArray jsonObject = new JSONArray(phoneNo);
 
-            for(Contact contact : contacts){
-                smsManager.sendTextMessage(contact.getPhoneNumber(), null, msg + " " + url, null, null);
+//            JSONArray jsonArray = jsonObject.getJSONArray(0);
+//            for(Contact contact : contacts){
+//                Toast.makeText(context, "sending message" + contact.getPhoneNumber(),
+//                        Toast.LENGTH_LONG).show();
+//                smsManager.sendTextMessage(contact.getPhoneNumber(), null, msg + " " + url, null, null);
+//            }
+            for(int i = 0; i < jsonObject.length(); i++){
+                String phone = jsonObject.getJSONObject(i).getString("phoneNumber");
+                smsManager.sendTextMessage(phone, null, msg + " " + url, null, null);
             }
 
             smsManager.sendTextMessage(phoneNo, null, msg, null, null);
@@ -182,9 +202,13 @@ public class MainActivity extends FlutterActivity {
                             "FlutterSharedPreferences", Context.MODE_PRIVATE);
                     if(!smsSent){
                         Log.v("Sending_SMS", "Number:" + sharedPref.getString("flutter.phoneNumber", ""));
-                        sendSms(sharedPref.getString("flutter.selected_contacts", ""),
-                                sharedPref.getString("flutter.selected_message", "HELP"),
-                                sharedPref.getString("flutter.use_location", "false").equals("true") ? true : false,
+                        String message = sharedPref.getString("flutter.selected_message", "אני צריכה עזרה").equals("") ?
+                                "אני צריכה עזרה" : sharedPref.getString("flutter.selected_message", "אני צריכה עזרה");
+                        boolean sendLocation = sharedPref.getString("flutter.use_location", "").isEmpty() ?
+                                true : (sharedPref.getString("flutter.use_location", "false").equals("true") ? true : false);
+                        sendSms(sharedPref.getString("flutter.sms_numbers", ""),
+                                message,
+                                sendLocation,
                                 getContext());
                         smsSent = true;
                         //startScanAfterSmsSent();

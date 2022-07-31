@@ -4,6 +4,7 @@ import 'package:safe_button/pages/contacts/contacts_view.dart';
 import 'package:safe_button/routes/routes.dart';
 import 'package:butterfly_sdk_flutter_plugin/butterfly_sdk_flutter_plugin.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:url_launcher/url_launcher.dart' as ul;
 
 class SettingsView extends StatelessWidget {
   static const String routeName = '/settings';
@@ -133,6 +134,20 @@ class SettingsView extends StatelessWidget {
   }
 }
 
+Future<void> _launchUrl() async {
+  final Uri _url = Uri.parse('safebuttonio@gmail.com');
+  const String subject = "צור קשר";
+  const String body = "שלום רב,";
+  Uri mail = Uri.parse("mailto:$_url?subject=$subject&body=${Uri.encodeFull(body)}");
+  // ul.WebViewConfiguration webViewConfiguration = ul.WebViewConfiguration(enableJavaScript: true);
+  // await ul.launchUrl(mail, webViewConfiguration: webViewConfiguration);
+  if (await ul.canLaunchUrl(mail)) {
+    await ul.launchUrl(mail);
+  } else {
+    throw Exception("Unable to open the email");
+  }
+}
+
 class SettingsListTile extends StatefulWidget {
   String image;
 
@@ -161,8 +176,6 @@ class _SettingsListTileState extends State<SettingsListTile> {
             width: 36,
             height: 36,
             fit: BoxFit.scaleDown),
-        onTap: () {
-          Navigator.pushNamed(context, Routes.contactUs);
-        });
+        onTap: _launchUrl);
   }
 }
